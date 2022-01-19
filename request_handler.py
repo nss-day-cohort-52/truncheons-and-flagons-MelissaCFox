@@ -22,7 +22,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         url_parts = path.split("/")
         url_parts.pop(0)
 
-        resource = url_parts[1]
+        resource = url_parts[0]
         if "?" in resource:
             [resource, params] =  resource.split("?")
             filters = self.parse_query_string_parameters(params)
@@ -65,14 +65,16 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         response = {}
         (resource, id, filters) = self.parse_url(self.path)
-        response = f"{get_teams(filters)}"
+        
+        if resource == "teams":
+            response = f"{get_teams(filters)}"
 
         self.wfile.write(response.encode())
 
 
 def main():
     host = ''
-    port = 8089
+    port = 8080
     HTTPServer((host, port), HandleRequests).serve_forever()
 
 
