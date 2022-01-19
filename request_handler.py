@@ -74,9 +74,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
 def main():
     host = ''
-    port = 8080
+    port = int(os.environ['PORT'])
     HTTPServer((host, port), HandleRequests).serve_forever()
 
 
-if __name__ == "__main__":
-    main()
+main()
