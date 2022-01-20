@@ -1,6 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from teams.request import get_teams
+from teams.request import (get_teams, get_team_scores, add_player,
+                           add_team, add_team_score)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -68,14 +69,45 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "teams":
             response = f"{get_teams(filters)}"
+        if resource == "teamscores":
+            response = get_team_scores()
 
         self.wfile.write(response.encode())
+    
+    def do_POST(self):
+        self._set_headers(201)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        
+        post_body = json.loads(post_body)
+        
+        (resource, id, filters) = self.parse_url(self.path)
+        
+        new_object = None
+        
+        if resource == "teams":
+            new_object = add_team(post_body)
+        if resource == "players":
+            new_object = add_player(post_body)
+        if resource == "teamscores":
+            new_object = add_team_score(post_body)
 
+        self.wfile.write(f"{new_object}".encode())
 
 def main():
     host = ''
-    port = int(os.environ['PORT'])
+    port = 8080
     HTTPServer((host, port), HandleRequests).serve_forever()
 
 
-main()
+if __name__ == "__main__":
+    main()
+
+# -- Heroku Deployment --
+# def main():
+#     host = ''
+#     port = int(os.environ['PORT'])
+#     HTTPServer((host, port), HandleRequests).serve_forever()
+
+
+# main()

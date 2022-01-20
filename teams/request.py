@@ -88,4 +88,67 @@ def get_teams(filters):
             for team in teams.values():
                 json_teams.append(team.__dict__)
             return json.dumps(json_teams)
-   
+
+
+def get_team_scores():
+    with sqlite3.connect("./flagons.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            ts.id, 
+            ts.teamId,
+            ts.score,
+            ts.timeStamp
+        FROM TeamScore ts
+        """)
+
+        dataset = db_cursor.fetchall()
+
+        team_scores = []
+        for row in dataset:
+            team = TeamScore(row['id'], row['teamId'], row['score'],
+                             row['timeStamp'])
+            team_scores.append(team.__dict__)
+
+        return json.dumps(team_scores)
+    
+# Inserting Rows
+def add_team_score(new_team_score):
+    with sqlite3.connect("./flagons.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO TeamScore
+            ( teamId, score, timeStamp)
+        VALUES
+            ( ?, ?, ? );
+        """, (new_team_score['teamId'], new_team_score['score'],
+              new_team_score['timeStamp']))
+    
+def add_team(new_team):
+    with sqlite3.connect("./flagons.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Teams
+            ( name )
+        VALUES
+            ( ? );
+        """, (new_team['name'], ))
+    
+def add_player(new_player):
+    with sqlite3.connect("./flagons.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Players
+            ( firstName, lastName, teamId)
+        VALUES
+            ( ?, ?, ? );
+        """, (new_player['firstName'], new_player['lastName'],
+              new_player['teamId']))
