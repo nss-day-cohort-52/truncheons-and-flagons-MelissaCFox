@@ -127,6 +127,10 @@ def add_team_score(new_team_score):
             ( ?, ?, ? );
         """, (new_team_score['teamId'], new_team_score['score'],
               new_team_score['timeStamp']))
+        
+        id = db_cursor.lastrowid
+        new_team_score['id'] = id
+    return json.dumps(new_team_score)
     
 def add_team(new_team):
     with sqlite3.connect("./flagons.db") as conn:
@@ -139,6 +143,10 @@ def add_team(new_team):
         VALUES
             ( ? );
         """, (new_team['name'], ))
+
+        id = db_cursor.lastrowid
+        new_team['id'] = id
+    return json.dumps(new_team)
     
 def add_player(new_player):
     with sqlite3.connect("./flagons.db") as conn:
@@ -152,3 +160,7 @@ def add_player(new_player):
             ( ?, ?, ? );
         """, (new_player['firstName'], new_player['lastName'],
               new_player['teamId']))
+        
+        id = db_cursor.lastrowid
+        new_player['id'] = id
+    return json.dumps(new_player)
