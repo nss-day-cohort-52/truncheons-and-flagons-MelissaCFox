@@ -106,7 +106,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 # -- Heroku Deployment --
 def main():
     host = ''
-    port = int(os.environ['8088'])
+    port = int(os.environ['PORT'])
     HTTPServer((host, port), HandleRequests).serve_forever()
 
 

@@ -1,1 +1,1 @@
-web: python request_handler.py $8080
+web: python request_handler.py $PORT
