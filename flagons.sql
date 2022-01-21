@@ -75,3 +75,9 @@ SELECT
     p.teamId
 FROM Teams t
 JOIN Players p ON p.teamId = t.id
+
+
+DELETE FROM Teams WHERE id = 9;
+DELETE FROM Players WHERE id = 25;
+DELETE FROM Players WHERE id = 26;
+DELETE FROM Players WHERE id = 27;

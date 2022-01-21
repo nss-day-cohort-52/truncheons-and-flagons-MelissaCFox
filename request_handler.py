@@ -94,20 +94,20 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write(f"{new_object}".encode())
 
-def main():
-    host = ''
-    port = 8080
-    HTTPServer((host, port), HandleRequests).serve_forever()
-
-
-if __name__ == "__main__":
-    main()
-
-# -- Heroku Deployment --
 # def main():
 #     host = ''
-#     port = int(os.environ['PORT'])
+#     port = 8080
 #     HTTPServer((host, port), HandleRequests).serve_forever()
 
 
-# main()
+# if __name__ == "__main__":
+#     main()
+
+# -- Heroku Deployment --
+def main():
+    host = ''
+    port = int(os.environ['8088'])
+    HTTPServer((host, port), HandleRequests).serve_forever()
+
+
+main()
