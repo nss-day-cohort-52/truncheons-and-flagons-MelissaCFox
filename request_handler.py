@@ -1,4 +1,5 @@
 import json
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from teams.request import (get_teams, get_team_scores, add_player,
                            add_team, add_team_score)
